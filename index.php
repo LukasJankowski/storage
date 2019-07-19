@@ -15,7 +15,7 @@ $config['log']->pushHandler(new BrowserConsoleHandler());
 $config['store'] = 'file';
 $config['storeConfig'] = [
     'identifier' => 'custom',
-    'path' => './test.data'
+    'path' => 'src/resources/store.json'
 ];
 
 /*
@@ -49,6 +49,3 @@ unset($storage['myval']);
 echo $storage;
 
 $storage->persist();
-
-
-//var_dump($storage);
