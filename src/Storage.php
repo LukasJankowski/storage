@@ -4,29 +4,20 @@ namespace LukasJankowski\Storage;
 
 use ArrayAccess;
 use LukasJankowski\Storage\Repository\RepositoryInterface;
-use Monolog\Logger;
 
 class Storage implements ArrayAccess
 {
     /** @var RepositoryInterface - The repository to access */
     private $repository;
 
-    /** @var Logger - The logger to use */
-    private $logger;
-
-    /** @var string - The prefix for the logger */
-    private $logPrefix = 'LukasJankowski\Storage.Storage:';
-
     /**
      * Storage constructor.
      *
      * @param RepositoryInterface $repository
-     * @param Logger $logger
      */
-    public function __construct(RepositoryInterface $repository, Logger $logger)
+    public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
-        $this->logger = $logger;
     }
 
     /**

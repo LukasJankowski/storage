@@ -1,20 +1,15 @@
 <?php
 
-
 namespace LukasJankowski\Storage\Store;
 
 use LukasJankowski\Storage\Condition\FileCondition;
 use LukasJankowski\Storage\Repository\FileRepository;
 use LukasJankowski\Storage\Repository\RepositoryInterface;
-use Monolog\Logger;
 
 class FileStore implements StoreInterface
 {
     /** @var array - The configuration for the database */
     private $config;
-
-    /** @var Logger - The logger for this store */
-    private $logger;
 
     /** @var string - The identifier to separate the records */
     private $identifier;
@@ -25,21 +20,16 @@ class FileStore implements StoreInterface
     /** @var array - The data to modify */
     private $data;
 
-    /** @var string - The prefix for this specific class */
-    private $logPrefix = 'LukasJankowski\Storage.Store.FileStore:';
-
     /**
      * DatabaseStore constructor.
      *
      * @param array $config
-     * @param Logger $logger
      *
      * @throws \ErrorException|\InvalidArgumentException
      */
-    public function __construct(array $config, Logger $logger)
+    public function __construct(array $config)
     {
         $this->config = $config;
-        $this->logger = $logger;
 
         $this->ensureWorkingCondition();
 
@@ -56,7 +46,7 @@ class FileStore implements StoreInterface
      */
     private function ensureWorkingCondition(): void
     {
-        $condition = new FileCondition($this->logger);
+        $condition = new FileCondition;
         $condition->setConfig($this->config);
         $condition->check();
     }
@@ -71,25 +61,13 @@ class FileStore implements StoreInterface
     {
         $contents = file_get_contents($this->file);
         if ($contents === false) {
-            $this->logger->error(
-                sprintf('%s The content of the file could not be read.', $this->logPrefix)
-            );
-
             throw new \ErrorException('The content could not be received.');
         }
 
         $data = json_decode($contents, true);
         if ($data === null && $contents !== '') {
-            $this->logger->error(
-                sprintf('%s The content of the file is not valid JSON.', $this->logPrefix)
-            );
-
             throw new \ErrorException('The content is not JSON.');
         }
-
-        $this->logger->debug(
-            sprintf('%s Store successfully loaded from file.', $this->logPrefix)
-        );
 
         $this->data = $data;
     }
@@ -101,7 +79,7 @@ class FileStore implements StoreInterface
      */
     public function getRepository(): RepositoryInterface
     {
-        return new FileRepository($this, $this->logger);
+        return new FileRepository($this);
     }
 
     /**
@@ -116,16 +94,8 @@ class FileStore implements StoreInterface
         $isSuccessful = file_put_contents($this->file, $contents);
 
         if ($isSuccessful === false) {
-            $this->logger->error(
-                sprintf('%s The data could not be written to the file.', $this->logPrefix)
-            );
-
             throw new \ErrorException('Unable to write data to file.');
         }
-
-        $this->logger->debug(
-            sprintf('%s Store successfully saved to file.', $this->logPrefix)
-        );
 
         return $isSuccessful;
     }

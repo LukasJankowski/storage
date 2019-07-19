@@ -1,10 +1,8 @@
 <?php
 
-
 namespace LukasJankowski\Storage\Store;
 
 use LukasJankowski\Storage\Repository\RepositoryInterface;
-use Monolog\Logger;
 
 interface StoreInterface
 {
@@ -12,9 +10,8 @@ interface StoreInterface
      * StoreInterface constructor.
      *
      * @param array $config
-     * @param Logger $logger
      */
-    public function __construct(array $config, Logger $logger);
+    public function __construct(array $config);
 
     /**
      * Get the repository for the store.

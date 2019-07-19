@@ -1,32 +1,22 @@
 <?php
 
-
 namespace LukasJankowski\Storage\Repository;
 
 use LukasJankowski\Storage\Store\StoreInterface;
-use Monolog\Logger;
 
 class DatabaseRepository implements RepositoryInterface
 {
     /** @var StoreInterface - The database store to use */
     private $store;
 
-    /** @var Logger - The logger to use */
-    private $logger;
-
-    /** @var string - The prefix for the logger */
-    private $logPrefix = 'LukasJankowski\Storage.Repository.DatabaseRepository:';
-
     /**
      * DatabaseRepository constructor.
      *
      * @param StoreInterface $store
-     * @param Logger $logger
      */
-    public function __construct(StoreInterface $store, Logger $logger)
+    public function __construct(StoreInterface $store)
     {
         $this->store = $store;
-        $this->logger = $logger;
     }
 
     /**

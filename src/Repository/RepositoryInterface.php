@@ -1,14 +1,17 @@
 <?php
 
-
 namespace LukasJankowski\Storage\Repository;
 
 use LukasJankowski\Storage\Store\StoreInterface;
-use Monolog\Logger;
 
 interface RepositoryInterface
 {
-    public function __construct(StoreInterface $store, Logger $logger);
+    /**
+     * RepositoryInterface constructor.
+     *
+     * @param StoreInterface $store
+     */
+    public function __construct(StoreInterface $store);
 
     /**
      * Persist the data to the store. May or may not be of actual use

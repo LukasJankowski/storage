@@ -1,11 +1,7 @@
 <?php
 
-
 namespace LukasJankowski\Storage\Condition;
 
-use ErrorException;
-use InvalidArgumentException;
-use Monolog\Logger;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Comparator;
 
@@ -14,24 +10,8 @@ class DatabaseCondition implements ConditionInterface
     /** @var array - The configuration for the database */
     private $config;
 
-    /** @var Logger - The logger for this store */
-    private $logger;
-
     /** @var Connection - The connection to the database */
     private $connection;
-
-    /** @var string - The prefix for this specific class */
-    private $logPrefix = 'LukasJankowski\Storage.Condition.DatabaseCondition:';
-
-    /**
-     * DatabaseCondition constructor.
-     *
-     * @param Logger $logger
-     */
-    public function __construct(Logger $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Setter. Set the connection.
@@ -56,7 +36,7 @@ class DatabaseCondition implements ConditionInterface
     /**
      * Check if the connection can be used.
      *
-     * @throws ErrorException
+     * @throws \ErrorException
      */
     public function check(): void
     {
@@ -68,48 +48,32 @@ class DatabaseCondition implements ConditionInterface
     /**
      * Check if the provided configuration is sufficient for the store.
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function testConfigurationSufficient(): void
     {
-        if (!isset($this->config['identifier'])) {
-            $this->logger->debug(
-                sprintf('%s No identifier specified, all records are accessible.', $this->logPrefix)
-            );
-        }
-
         if (!isset($this->config['tableName'])) {
-            $this->logger->error(sprintf('%s The tableName argument must be set.', $this->logPrefix));
-            throw new InvalidArgumentException('No table-name set.');
+            throw new \InvalidArgumentException('No table-name set.');
         }
     }
 
     /**
      * Check if the table to use exists
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function testTableExists(): void
     {
         $schemaManager = $this->connection->getSchemaManager();
         if (!$schemaManager->tablesExist([$this->config['tableName']])) {
-            $this->logger->error(
-                sprintf(
-                    '%s No table "%s" exists. Consider running the migration first.',
-                    $this->logPrefix,
-                    $this->config['tableName']
-                )
-            );
-            throw new InvalidArgumentException('No table with the supplied name exists.');
+            throw new \InvalidArgumentException('No table with the supplied name exists.');
         }
-
-        $this->logger->debug(sprintf('%s Supplied table exists.', $this->logPrefix));
     }
 
     /**
      * Check if the table can be used safely.
      *
-     * @throws ErrorException
+     * @throws \ErrorException
      */
     private function testTableSchema(): void
     {
@@ -123,8 +87,7 @@ class DatabaseCondition implements ConditionInterface
         $differsFromExpected = count($comparator->compare($existingSchema, $expectedSchema)->changedTables) > 0;
 
         if ($differsFromExpected) {
-            $this->logger->error(sprintf('%s The used schema differs from the required one.', $this->logPrefix));
-            throw new ErrorException('The table schema differs from the expected schema.');
+            throw new \ErrorException('The table schema differs from the expected schema.');
         }
     }
 }
