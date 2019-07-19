@@ -1,0 +1,6 @@
+formatter.name: pretty
+
+suites:
+    LukasJankowski_suite:
+        namespace: LukasJankowski\Storage
+        psr4_prefix: LukasJankowski\Storage

@@ -1,0 +1,29 @@
+{
+    "name": "lukasjankowski/storage",
+    "description": "a superglobal abstraction for persistant storage",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lukas Jankowski",
+            "email": "LukasJankowski@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "LukasJankowski\\Storage\\": "src/"
+        }
+    },
+    "require": {
+        "doctrine/dbal": "^2.9",
+        "monolog/monolog": "^1.24",
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.2",
+        "phpspec/phpspec": "^5.1",
+        "squizlabs/php_codesniffer": "^3.4"
+    }
+}
