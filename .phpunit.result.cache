@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":279:{a:2:{s:7:"defects";a:1:{s:52:"StorageTest::testThrowsExceptionOnNonExistingStorage";i:4;}s:5:"times";a:3:{s:28:"StorageTest::test__construct";d:0.002;s:43:"StorageTest::testNonExistingItemReturnsNull";d:0.002;s:52:"StorageTest::testThrowsExceptionOnNonExistingStorage";d:0.002;}}}
